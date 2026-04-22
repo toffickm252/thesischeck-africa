@@ -53,3 +53,20 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# Node / React
+node_modules/
+frontend/build/
+frontend/.env
+.env
+
+# Uploaded files (never commit user documents)
+backend/uploads/
+*.pdf
+
+# Python
+backend/venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
