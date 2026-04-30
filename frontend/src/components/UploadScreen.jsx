@@ -5,6 +5,43 @@ function UploadScreen() {
   const [guidelinesFile, setGuidelinesFile] = useState(null)
   const [university, setUniversity] = useState('')
   const [department, setDepartment] = useState('')
+  const [isUploading, setIsUploading] = useState(false)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!thesisFile || !guidelinesFile) {
+      alert('Please select both PDF files.')
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('thesis', thesisFile)
+    formData.append('guidelines', guidelinesFile)
+    formData.append('university', university)
+    formData.append('department', department)
+
+    setIsUploading(true)
+    try {
+      const response = await fetch('http://localhost:8000/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.detail || 'Upload failed')
+      }
+
+      const data = await response.json()
+      console.log('Extraction result:', data)
+      alert('Text extracted! Check browser console.')
+    } catch (error) {
+      console.error('Upload error:', error)
+      alert(`Upload failed: ${error.message}`)
+    } finally {
+      setIsUploading(false)
+    }
+  }
 
   return (
     <div>
@@ -48,7 +85,9 @@ function UploadScreen() {
         />
       </div>
 
-      <button>Submit</button>
+      <button onClick={handleSubmit} disabled={isUploading}>
+        {isUploading ? 'Extracting text...' : 'Submit'}
+      </button>
     </div>
   )
 }
