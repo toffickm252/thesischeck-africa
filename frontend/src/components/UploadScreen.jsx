@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function UploadScreen({ onResults }) {
+function UploadScreen({ onResults, onSetScreen }) {
   const [thesisFile, setThesisFile] = useState(null)
   const [guidelinesFile, setGuidelinesFile] = useState(null)
   const [university, setUniversity] = useState('')
@@ -20,7 +20,7 @@ function UploadScreen({ onResults }) {
     formData.append('university', university)
     formData.append('department', department)
 
-    setIsUploading(true)
+    onSetScreen('processing')
     try {
       const response = await fetch('http://localhost:8000/analyze', {
         method: 'POST',
@@ -35,7 +35,7 @@ function UploadScreen({ onResults }) {
       const data = await response.json()
       // console.log('Extraction result:', data)
       onResults(data.chapters)
-      alert('Text extracted! Check browser console.')
+      // alert('Text extracted! Check browser console.')
     } catch (error) {
       console.error('Upload error:', error)
       alert(`Upload failed: ${error.message}`)

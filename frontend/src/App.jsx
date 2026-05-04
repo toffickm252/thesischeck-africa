@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import LandingPage from './components/LandingPage'
 import UploadScreen from './components/UploadScreen'
 import ResultsScreen from './components/ResultsScreen'
+import ProcessingScreen from './components/ProcessingScreen'
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState('landing')
@@ -20,11 +21,12 @@ function App() {
         <LandingPage onStart={() => setCurrentScreen('upload')} />
       )}
       {currentScreen === 'upload' && (
-        <UploadScreen onResults={handleResults} />
+        <UploadScreen onResults={handleResults} onSetScreen={setCurrentScreen} />
       )}
       {currentScreen === 'results' && (
         <ResultsScreen chapters={results} />
       )}
+      {currentScreen === 'processing' && <ProcessingScreen />}
     </div>
   )
 }
