@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-function UploadScreen() {
+function UploadScreen({ onResults }) {
   const [thesisFile, setThesisFile] = useState(null)
   const [guidelinesFile, setGuidelinesFile] = useState(null)
   const [university, setUniversity] = useState('')
@@ -33,7 +33,8 @@ function UploadScreen() {
       }
 
       const data = await response.json()
-      console.log('Extraction result:', data)
+      // console.log('Extraction result:', data)
+      onResults(data.chapters)
       alert('Text extracted! Check browser console.')
     } catch (error) {
       console.error('Upload error:', error)
