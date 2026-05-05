@@ -22,7 +22,7 @@ function UploadScreen({ onResults, onSetScreen }) {
     onSetScreen('processing')
     setIsUploading(true)
     try {
-      const response = await fetch('http://localhost:8000/analyze', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/analyze`, {
         method: 'POST',
         body: formData,
       })
