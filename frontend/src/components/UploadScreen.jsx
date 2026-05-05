@@ -7,8 +7,7 @@ function UploadScreen({ onResults, onSetScreen }) {
   const [department, setDepartment] = useState('')
   const [isUploading, setIsUploading] = useState(false)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     if (!thesisFile || !guidelinesFile) {
       alert('Please select both PDF files.')
       return
@@ -21,6 +20,7 @@ function UploadScreen({ onResults, onSetScreen }) {
     formData.append('department', department)
 
     onSetScreen('processing')
+    setIsUploading(true)
     try {
       const response = await fetch('http://localhost:8000/analyze', {
         method: 'POST',
@@ -33,9 +33,7 @@ function UploadScreen({ onResults, onSetScreen }) {
       }
 
       const data = await response.json()
-      // console.log('Extraction result:', data)
       onResults(data.chapters)
-      // alert('Text extracted! Check browser console.')
     } catch (error) {
       console.error('Upload error:', error)
       alert(`Upload failed: ${error.message}`)
@@ -45,49 +43,31 @@ function UploadScreen({ onResults, onSetScreen }) {
   }
 
   return (
-    <div>
+    <div className="upload">
       <h2>Upload Your Thesis</h2>
 
-      <div>
+      <div className="field">
         <label>Thesis PDF</label>
-        <input
-          type="file"
-          accept=".pdf"
-          onChange={(e) => setThesisFile(e.target.files[0])}
-        />
+        <input type="file" accept=".pdf" onChange={(e) => setThesisFile(e.target.files[0])} />
       </div>
 
-      <div>
+      <div className="field">
         <label>Department Guidelines PDF</label>
-        <input
-          type="file"
-          accept=".pdf"
-          onChange={(e) => setGuidelinesFile(e.target.files[0])}
-        />
+        <input type="file" accept=".pdf" onChange={(e) => setGuidelinesFile(e.target.files[0])} />
       </div>
 
-      <div>
+      <div className="field">
         <label>University</label>
-        <input
-          type="text"
-          value={university}
-          onChange={(e) => setUniversity(e.target.value)}
-          placeholder="e.g. University of Ghana"
-        />
+        <input type="text" value={university} onChange={(e) => setUniversity(e.target.value)} placeholder="e.g. University of Ghana" />
       </div>
 
-      <div>
+      <div className="field">
         <label>Department</label>
-        <input
-          type="text"
-          value={department}
-          onChange={(e) => setDepartment(e.target.value)}
-          placeholder="e.g. Computer Science"
-        />
+        <input type="text" value={department} onChange={(e) => setDepartment(e.target.value)} placeholder="e.g. Computer Science" />
       </div>
 
-      <button onClick={handleSubmit} disabled={isUploading}>
-        {isUploading ? 'Extracting text...' : 'Submit'}
+      <button className="btn btn-primary" onClick={handleSubmit} disabled={isUploading}>
+        {isUploading ? 'Analyzing...' : 'Analyze Thesis'}
       </button>
     </div>
   )

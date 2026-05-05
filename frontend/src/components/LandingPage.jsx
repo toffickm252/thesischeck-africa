@@ -1,9 +1,9 @@
 function LandingPage({ onStart }) {
   return (
-    <div>
-      <h1>Get feedback on your thesis before it is evaluated by your supervisor</h1>
-      <p>Upload your thesis and department guidelines. Get chapter-by-chapter feedback on your arguments and structure.</p>
-      <button onClick={onStart}>Check My Thesis</button>
+    <div className="landing">
+      <h1>Get feedback on your thesis before your supervisor does</h1>
+      <p>Upload your thesis and department guidelines. Get chapter-by-chapter feedback on argument coherence and structural compliance.</p>
+      <button className="btn btn-primary" onClick={onStart}>Check My Thesis</button>
     </div>
   )
 }
